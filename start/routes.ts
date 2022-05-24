@@ -23,3 +23,5 @@ import Route from '@ioc:Adonis/Core/Route'
 Route.get('/', async () => {
   return { message: 'Welcome to verifi-now backend-apis.' }
 })
+
+Route.post('users/:user/sample_video', 'UsersController.uploadSampleVideo')
