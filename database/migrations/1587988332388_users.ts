@@ -6,13 +6,40 @@ export default class UsersSchema extends BaseSchema {
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
-      table.string('email', 255).notNullable()
-      table.string('password', 180).notNullable()
-      table.string('phone', 180).notNullable()
+
+
+
       table.string('designation', 180).notNullable()
       table.string('department', 180).notNullable()
-      table.string('emp_video_sample_path').nullable()
+
       table.string('remember_me_token').nullable()
+
+
+      table.string('name').notNullable()
+      table.string('first_name').notNullable()
+      table.string('last_name')
+
+      table.string('email', 255).notNullable().unique()
+      table.boolean('email_verified').notNullable().defaultTo(false)
+
+      table.boolean('is_active').defaultTo(false)
+      table.integer('company_id').unsigned().index().nullable().references('id').inTable('companies').onUpdate('cascade').onDelete('SET NULL')
+      table.integer('user_type').notNullable().defaultTo(2).comment('1=super-admin,2=admin,3=employee')
+
+
+      table.date('dob')
+      table.text('about_me')
+      table.string('address', 255)
+
+      table.string('phone')
+      table.string('phone_cc')
+      table.string('phone_no')
+      table.boolean('phone_verified').notNullable().defaultTo(false)
+
+      table.string('pic_url', 255)
+      table.string('password', 255).nullable()
+
+
       table.timestamps(true)
     })
   }
