@@ -1,10 +1,21 @@
 import { DateTime } from 'luxon'
 import Hash from '@ioc:Adonis/Core/Hash'
-import { column, beforeSave, BaseModel } from '@ioc:Adonis/Lucid/Orm'
+import { column, beforeSave, BaseModel, hasMany, HasMany, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
+import Device from 'App/Models/Device'
+import Company from 'App/Models/Company'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
   public id: number
+
+  @column()
+  public firstName?: string
+
+  @column()
+  public lastName?: string
+
+  @column()
+  public name: string
 
   @column()
   public email: string
@@ -22,10 +33,19 @@ export default class User extends BaseModel {
   public department: string
 
   @column()
+  public address?: string
+
+  @column()
+  public companyId?: number
+
+  @column()
   public empVideoSamplePath?: string
 
   @column()
   public rememberMeToken?: string
+
+  @column()
+  public accessToken?: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
@@ -39,4 +59,10 @@ export default class User extends BaseModel {
       user.password = await Hash.make(user.password)
     }
   }
+
+  @hasMany(() => Device)
+  public devices: HasMany<typeof Device>
+
+  @belongsTo(() => Company)
+  public company: BelongsTo<typeof Company>
 }

@@ -23,5 +23,15 @@ import Route from '@ioc:Adonis/Core/Route'
 Route.get('/', async () => {
   return { message: 'Welcome to verifi-now backend-apis.' }
 })
+// Auth routes
+Route.post('users/login', 'AuthController.login')
 
-Route.post('users/:user/sample_video', 'UsersController.uploadSampleVideo')
+Route.group(() => {
+  // Employee
+  Route.post('employees', 'UsersController.createEmployee')
+
+  // Media
+  Route.post('files', 'MediaController.create')
+
+  Route.post('users/:user/sample_video', 'UsersController.uploadSampleVideo')
+}).middleware('auth')

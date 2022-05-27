@@ -9,6 +9,7 @@ export default class Devices extends BaseSchema {
       table.string('name').notNullable()
       table.string('serial_number').notNullable()
       table.string('device_type').notNullable()
+      table.integer('user_id').unsigned().index().notNullable().references('id').inTable('users').onUpdate('cascade').onDelete('cascade')
       table.timestamps(true)
     })
   }

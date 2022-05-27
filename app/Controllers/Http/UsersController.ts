@@ -1,59 +1,35 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import * as fs from 'fs'
+import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import User from 'App/Models/User'
-import Drive from '@ioc:Adonis/Core/Drive'
-import { v4 as uuid } from 'uuid'
 
 export default class UsersController {
-  public async uploadSampleVideo({ request, params, response }: HttpContextContract) {
+  public async createEmployee({ request, response }: HttpContextContract) {
     try {
-      const file = request.file('file')
-      const validTypes = ['mp4']
-
-      if (!file) {
-        return response.json({
-          status: false,
-          message: `File must be attached with request`,
-        })
-      }
-
-      if (!validTypes.includes(file.extname!)) {
-        return response.json({
-          status: false,
-          message: `File type must be one of ${validTypes}`,
-        })
-      }
-
-      let user = await User.query().where('id', params.user).first()
-
-      if (!user) {
-        return response.json({
-          status: false,
-          message: `User with id ${params.user} not found.`,
-        })
-      }
-
-      const contents = fs.readFileSync(file.tmpPath!)
-
-      let file_uuid = uuid()
-      let file_path = `samples/user_${params.user}/${file_uuid}.${file.extname}`
-
-      await Drive.put(file_path, contents, {
-        ContentType: `video/${file.extname}`,
+      const employeeSchema = schema.create({
+        email: schema.string([rules.email(), rules.unique({ table: 'users', column: 'email', caseInsensitive: true })]),
+        password: schema.string([rules.minLength(8)]),
+        name: schema.string(),
+        first_name: schema.string.optional(),
+        last_name: schema.string.optional(),
+        designation: schema.string(),
+        department: schema.string(),
+        address: schema.string.optional(),
       })
 
-      user.empVideoSamplePath = file_path
-      await user?.save()
+      const employeeData = await request.validate({ schema: employeeSchema })
+
+      const user = await User.create(employeeData)
 
       return response.json({
         status: true,
-        message: 'Sample video has been uploaded.',
+        message: 'Employee has been created.',
+        data: user.toJSON(),
       })
     } catch (error) {
-      console.log(error)
+      console.error(error)
       return response.json({
         status: false,
-        message: error.messages,
+        message: error,
       })
     }
   }
