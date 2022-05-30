@@ -33,6 +33,12 @@ export default class User extends BaseModel {
   public department: string
 
   @column()
+  public userType: number
+
+  @column()
+  public isActive: boolean
+
+  @column()
   public address?: string
 
   @column()

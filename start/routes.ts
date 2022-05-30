@@ -28,10 +28,32 @@ Route.post('users/login', 'AuthController.login')
 
 Route.group(() => {
   // Employee
-  Route.post('employees', 'UsersController.createEmployee')
+  Route.post('employees', 'UsersController.create')
+  Route.get('employees', 'UsersController.index')
+  Route.get('employees/:id', 'UsersController.details')
+  Route.put('employees/:id', 'UsersController.update')
+  Route.delete('employees/:id', 'UsersController.delete')
+
+  // Device
+  Route.post('employees/:empId/devices', 'DevicesController.create')
+  Route.get('employees/:empId/devices', 'DevicesController.index')
+  Route.get('employees/:empId/devices/:id', 'DevicesController.details')
+  Route.put('employees/:empId/devices/:id', 'DevicesController.update')
+  Route.delete('employees/:empId/devices/:id', 'DevicesController.delete')
 
   // Media
   Route.post('files', 'MediaController.create')
+  Route.get('files', 'MediaController.index')
+  Route.get('files/:id', 'MediaController.details')
+  Route.put('files/:id', 'MediaController.update')
+  Route.delete('files/:id', 'MediaController.delete')
+
+  // Company
+  Route.post('companies', 'CompaniesController.create')
+  Route.get('companies', 'CompaniesController.index')
+  Route.get('companies/:id', 'CompaniesController.details')
+  Route.put('companies/:id', 'CompaniesController.update')
+  Route.delete('companies/:id', 'CompaniesController.delete')
 
   Route.post('users/:user/sample_video', 'UsersController.uploadSampleVideo')
 }).middleware('auth')
