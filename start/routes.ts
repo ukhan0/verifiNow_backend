@@ -48,6 +48,10 @@ Route.group(() => {
   Route.put('files/:id', 'MediaController.update')
   Route.delete('files/:id', 'MediaController.delete')
 
+  //audio
+  Route.post('audio/upload', 'AudioMediaController.create')
+  Route.get('audio', 'AudioMediaController.index')
+
   // Company
   Route.post('companies', 'CompaniesController.create')
   Route.get('companies', 'CompaniesController.index')
