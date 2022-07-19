@@ -51,7 +51,7 @@ export default class MediaController {
       })
 
       let fileFullPath = await Drive.getUrl(fileLocalPath)
-
+      
       let media = new Media()
       media.originalName = file.clientName
       media.originalExt = file.extname!
